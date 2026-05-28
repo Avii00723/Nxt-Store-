@@ -1,7 +1,7 @@
 'use server';
 
 import db from '@/utils/db';
-import redirect from 'next/navigation';
+import { redirect } from 'next/navigation';
 export const fetchFeaturedProducts = async () => {
     const products = await db.product.findMany({
         where: { 
