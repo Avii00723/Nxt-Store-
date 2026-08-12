@@ -9,7 +9,7 @@ import { imageschema, productSchema, reviewSchema, validateWithZodSchema } from 
 import { deleteImage, uploadImage } from './supabase';
 import { revalidatePath } from 'next/cache';
 import { email, includes } from 'zod';
-import {Cart} from '@prisma/client';
+import {Cart, Order} from '@prisma/client';
 const getAuthUser = async () => {
     const user = await currentUser();
     if (!user) redirect('/');
@@ -520,7 +520,8 @@ export const createOrderAction =async (prevState:any,formData:FormData)=>{
   redirect('/orders');
 };
 
-export const fetchUserOrders=async()=>{
+export const fetchUserOrders=async(): Promise<Order[]>=>
+{
    const user=await getAdminUser()
    const orders=await db.order.findMany({
     where:{
