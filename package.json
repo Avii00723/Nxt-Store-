@@ -2,12 +2,15 @@
   "name": "store",
   "version": "0.1.0",
   "private": true,
+
   "scripts": {
     "dev": "next dev -p 3004",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start -p 3004",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
+
   "dependencies": {
     "@clerk/nextjs": "^6.39.5",
     "@hugeicons/core-free-icons": "^4.2.0",
