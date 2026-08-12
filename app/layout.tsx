@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Source_Sans_3 } from "next/font/google";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/navbar/Navbar";
 import Container from "@/components/global/Container";
 import Providers from "./providers";
 import { ClerkProvider } from "@/components/providers/ClerkProvider";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const sourceSans3 = Source_Sans_3({subsets:['latin'],variable:'--font-sans'});
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,7 +33,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html
         lang="en"
-        className={cn("font-sans", inter.variable)}
+        className={cn("font-sans", sourceSans3.variable)}
         suppressHydrationWarning
       >
         <body
@@ -48,4 +48,3 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
-

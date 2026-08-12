@@ -1,4 +1,3 @@
-import db from '@/utils/db'
 import React from 'react'
 
 function AboutPage() {

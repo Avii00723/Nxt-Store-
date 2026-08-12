@@ -1,5 +1,6 @@
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
+import { cn } from '@/lib/utils';
 
 type FormInputProps = {
   name: string;
@@ -7,6 +8,7 @@ type FormInputProps = {
   label?: string;
   defaultValue?: string;
   placeholder?: string;
+  className?: string;
 };
 
 function FormInput({
@@ -15,9 +17,10 @@ function FormInput({
   label,
   defaultValue,
   placeholder,
+  className,
 }: FormInputProps) {
   return (
-    <div className='mb-2'>
+    <div className={cn('mb-2', className)}>
       <Label htmlFor={name} className='capitalize'>
         {label || name}
       </Label>

@@ -2,7 +2,8 @@ import { fetchProductReviews } from '@/utils/actions';
 import SectionTitle from '../global/SectionTitle';
 import ReviewCard from './ReviewCard';
 
-async function ProductReviews({ productId }: { productId: string }) {
+
+async function ProductReviews({ productId }: {productId:string}) {
   const reviews = await fetchProductReviews(productId);
 
   return (
@@ -17,10 +18,11 @@ async function ProductReviews({ productId }: { productId: string }) {
             image: authorImageUrl,
             name: authorName,
           };
-          return <ReviewCard key={review.id} reviewInfo={reviewInfo} />;
+          return <ReviewCard key={review.id ?? `${authorName}-${rating}-${comment}`} reviewInfo={reviewInfo} />;
         })}
       </div>
     </div>
   );
 }
 export default ProductReviews;
+

@@ -9,7 +9,7 @@ import { useToast } from '../ui/use-toast';
 
 function ThirdColumn({ quantity, id }: { quantity: number; id: string }) {
   const [amount, setAmount] = useState(quantity);
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const handleAmountChange = async (value: number) => {

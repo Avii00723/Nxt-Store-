@@ -4,7 +4,7 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 import { useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-// import { SignInButton } from '@clerk/nextjs';
+import { SignInButton } from '@clerk/nextjs';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import { LuTrash2, LuSquare } from 'react-icons/lu';
 
@@ -69,21 +69,21 @@ export const IconButton = ({ actionType }: { actionType: actionType }) => {
   );
 };
 
-// export const CardSignInButton = () => {
-//   return (
-//     <SignInButton mode='modal'>
-//       <Button
-//         type='button'
-//         size='icon'
-//         variant='outline'
-//         className='p-2 cursor-pointer'
-//         asChild
-//       >
-//         <FaRegHeart />
-//       </Button>
-//     </SignInButton>
-//   );
-// };
+export const CardSignInButton = () => {
+  return (
+    <SignInButton mode='modal'>
+      <Button
+        type='button'
+        size='icon'
+        variant='outline'
+        className='p-2 cursor-pointer'
+        asChild
+      >
+        <FaRegHeart />
+      </Button>
+    </SignInButton>
+  );
+};
 
 export const CardSubmitButton = ({ isFavorite }: { isFavorite: boolean }) => {
   const { pending } = useFormStatus();
@@ -105,12 +105,12 @@ export const CardSubmitButton = ({ isFavorite }: { isFavorite: boolean }) => {
   );
 };
 
-// export const ProductSignInButton = () => {
-//   return (
-//     <SignInButton mode='modal'>
-//       <Button type='button' className='mt-8 capitalize'>
-//         sign in
-//       </Button>
-//     </SignInButton>
-//   );
-// };
+export const ProductSignInButton = () => {
+  return (
+    <SignInButton mode='modal'>
+      <Button type='button' className='mt-8 capitalize'>
+        sign in
+      </Button>
+    </SignInButton>
+  );
+};

@@ -8,7 +8,7 @@ import { CartItemWithProduct } from '@/utils/types';
 function CartItemsList({ cartItems }: { cartItems: CartItemWithProduct[] }) {
   return (
     <div>
-      {cartItems.map((cartItem) => {
+       {cartItems.map((cartItem) => {
         const { id, amount } = cartItem;
         const { image, name, company, price, id: productId } = cartItem.product;
 
