@@ -8,6 +8,8 @@ import Container from "@/components/global/Container";
 import Providers from "./providers";
 import { ClerkProvider } from "@/components/providers/ClerkProvider";
 
+export const dynamic = 'force-dynamic';
+
 const sourceSans3 = Source_Sans_3({subsets:['latin'],variable:'--font-sans'});
 
 const geistSans = localFont({
