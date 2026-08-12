@@ -10,9 +10,10 @@ function Hero() {
           We are changing the way people shop
         </h1>
         <p className='mt-8 max-w-xl text-lg leading-8 text-muted-foreground'>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus
-          maxime laboriosam, deserunt velit qui quia? Dolor dolores esse
-          corporis. Dolores.
+          &ldquo;Quality means doing it right when no one is looking.&rdquo;
+          <span className='block mt-2 text-sm not-italic'>
+            — Henry Ford
+          </span>
         </p>
         <Button asChild size='lg' className='mt-10 text-white'>
           <Link href='/products'>Our Products</Link>
