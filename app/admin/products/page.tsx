@@ -3,6 +3,7 @@ import { deleteProductAction, fetchAdminProducts } from '@/utils/actions';
 import Link from 'next/link';
 
 import { formatCurrency } from '@/utils/format';
+import type { Product } from '@prisma/client';
 import {
   Table,
   TableBody,
@@ -16,7 +17,7 @@ import { IconButton } from '@/components/form/Buttons';
 import FormContainer from '@/components/form/FormContainer';
 
 async function AdminProductsPage() {
-  const items = await fetchAdminProducts();
+  const items: Product[] = await fetchAdminProducts();
   if (items.length === 0) return <EmptyList />;
   return (
     <section>
