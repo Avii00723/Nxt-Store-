@@ -3,7 +3,7 @@ import { deleteProductAction, fetchAdminProducts } from '@/utils/actions';
 import Link from 'next/link';
 
 import { formatCurrency } from '@/utils/format';
-import type { Product } from '@/utils/types';
+import type { Product } from '@prisma/client';
 import {
   Table,
   TableBody,
