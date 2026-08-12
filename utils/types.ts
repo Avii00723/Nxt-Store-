@@ -40,3 +40,16 @@ export type Product = {
   updatedAt?: string | Date;
   clerkId?: string;
 };
+
+export type Order = {
+  id: string;
+  clerkId?: string;
+  products: number;
+  orderTotal: number;
+  tax: number;
+  shipping: number;
+  email: string;
+  isPaid: boolean;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+};

@@ -10,8 +10,10 @@ import {
 
 import { fetchAdminOrders } from '@/utils/actions';
 import { formatCurrency, formatDate } from '@/utils/format';
+import type { Order } from '@/utils/types';
+
 async function SalesPage() {
-  const orders = await fetchAdminOrders();
+  const orders: Order[] = await fetchAdminOrders();
 
   return (
     <div>
@@ -45,7 +47,7 @@ async function SalesPage() {
                 <TableCell>{formatCurrency(orderTotal)}</TableCell>
                 <TableCell>{formatCurrency(tax)}</TableCell>
                 <TableCell>{formatCurrency(shipping)}</TableCell>
-                <TableCell>{formatDate(createdAt)}</TableCell>
+                <TableCell>{formatDate(new Date(createdAt))}</TableCell>
               </TableRow>
             );
           })}
