@@ -8,12 +8,21 @@ import { redirect } from 'next/navigation';
 import { imageschema, productSchema, reviewSchema, validateWithZodSchema } from './schemas';
 import { deleteImage, uploadImage } from './supabase';
 import { revalidatePath } from 'next/cache';
-import { email, includes } from 'zod';
 import {Cart, Order, Prisma, Review, Product as PrismaProduct} from '@prisma/client';
 import { Product } from '@/utils/types';
 
+// NOTE: this validator now matches the `select` shape actually used in
+// fetchProductReviewsByUser below (id, rating, comment, product{name,image}).
+// Previously this used `include`, which implies ALL scalar Review fields +
+// the relation — that didn't match the narrower `select` query and caused
+// a "not assignable" type error on `return reviews;`.
 const reviewWithProduct = Prisma.validator<Prisma.ReviewDefaultArgs>()({
-  include: { product: { select: { name: true, image: true } } },
+  select: {
+    id: true,
+    rating: true,
+    comment: true,
+    product: { select: { name: true, image: true } },
+  },
 });
 
 export type ReviewWithProductType = Prisma.ReviewGetPayload<typeof reviewWithProduct>;
@@ -221,7 +230,6 @@ export const toggleFavoriteAction = async(prevState: {
     } catch (error) {
         return renderError(error);
     }
-    return {message: 'toggle favorite action'};
 }
 
 export const fetchUserFavorites = async(): Promise<FavoriteWithProductType[]> =>{
@@ -289,26 +297,22 @@ return{
     count:result[0]?._count.rating??0,
 }
 };
+
 export const fetchProductReviewsByUser = async(): Promise<ReviewWithProductType[]> => {
     const user=await getAuthUser()
     const reviews =await db.review.findMany({
         where:{
             clerkId:user.id
         },
-        select:{
-            id:true,
-            rating:true,
-            comment:true,
-            product:{
-                select:{
-                    image:true,
-                    name:true,
-                },
-            },
-        },
+        // Reusing the same validator's select clause here keeps the query
+        // and the ReviewWithProductType in permanent sync — if you ever add
+        // or remove a field, update it in one place (reviewWithProduct)
+        // and both the query and the type stay consistent.
+        ...reviewWithProduct,
     });
     return reviews;
 };
+
 export const deleteReviewAction = async(prevState:{reviewId:string}) => {
     const {reviewId}=prevState;
     const user=await getAuthUser()
@@ -427,7 +431,7 @@ export const updateCart = async (cart:Cart) => {
     });
     let numItemsInCart=0;
     let cartTotal=0
-    
+
     for(const item of cartItems){
         numItemsInCart+=item.amount
         cartTotal+=item.amount * item.product.price
