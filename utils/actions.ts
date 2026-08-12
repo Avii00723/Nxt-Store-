@@ -9,7 +9,19 @@ import { imageschema, productSchema, reviewSchema, validateWithZodSchema } from 
 import { deleteImage, uploadImage } from './supabase';
 import { revalidatePath } from 'next/cache';
 import { email, includes } from 'zod';
-import {Cart, Order} from '@prisma/client';
+import {Cart, Order, Prisma, Review} from '@prisma/client';
+import { Product } from '@/utils/types';
+
+const reviewWithProduct = Prisma.validator<Prisma.ReviewDefaultArgs>()({
+  include: { product: { select: { name: true, image: true } } },
+});
+
+export type ReviewWithProductType = Prisma.ReviewGetPayload<typeof reviewWithProduct>;
+
+export type FavoriteWithProductType = Prisma.FavoriteGetPayload<{
+  include: { product: true };
+}>;
+
 const getAuthUser = async () => {
     const user = await currentUser();
     if (!user) redirect('/');
@@ -28,7 +40,7 @@ const renderError = (error: unknown): { message: string } => {
         message: error instanceof Error ? error.message : 'An unexpected error occurred.',
     }
 }
-export const fetchFeaturedProducts = async () => {
+export const fetchFeaturedProducts = async (): Promise<Product[]> => {
     const products = await db.product.findMany({
         where: {
             featured: true
@@ -38,7 +50,7 @@ export const fetchFeaturedProducts = async () => {
     return products;
 };
 
-export const fetchAllProducts = async ({ search = '' }: { search: string }) => {
+export const fetchAllProducts = async ({ search = '' }: { search: string }): Promise<Product[]> => {
     const products = await db.product.findMany({
         where: {
             OR: [
@@ -52,7 +64,7 @@ export const fetchAllProducts = async ({ search = '' }: { search: string }) => {
     });
     return products;
 };
-export const fetchSingleProduct = async (productId: string) => {
+export const fetchSingleProduct = async (productId: string): Promise<Product> => {
     const product = await db.product.findUnique({
         where: { id: productId },
     });
@@ -87,7 +99,7 @@ export const createProductAction = async (
     redirect('/admin/products');
 };
 
-export const fetchAdminProducts = async () => {
+export const fetchAdminProducts = async (): Promise<Product[]> => {
     await getAdminUser();
     const products = await db.product.findMany({
         orderBy: {
@@ -212,7 +224,7 @@ export const toggleFavoriteAction = async(prevState: {
     return {message: 'toggle favorite action'};
 }
 
-export const fetchUserFavorites = async()=>{
+export const fetchUserFavorites = async(): Promise<FavoriteWithProductType[]> =>{
     const user=await getAuthUser()
     const favorites=await db.favorite.findMany({
         where:{
@@ -249,7 +261,7 @@ export const createReviewAction = async (
   }
 };
 
-export const fetchProductReviews = async (productId: string) => {
+export const fetchProductReviews = async (productId: string): Promise<Review[]> => {
   const reviews = await db.review.findMany({
     where: {
       productId,
@@ -277,7 +289,7 @@ return{
     count:result[0]?._count.rating??0,
 }
 };
-export const fetchProductReviewsByUser = async() => {
+export const fetchProductReviewsByUser = async(): Promise<ReviewWithProductType[]> => {
     const user=await getAuthUser()
     const reviews =await db.review.findMany({
         where:{
@@ -535,7 +547,7 @@ export const fetchUserOrders=async(): Promise<Order[]>=>
    return orders;
 };
 
-export const fetchAdminOrders=async()=>{
+export const fetchAdminOrders=async(): Promise<Order[]> =>{
     const user=await getAdminUser()
     const orders=await db.order.findMany({
         where:{
