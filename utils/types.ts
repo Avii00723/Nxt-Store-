@@ -41,6 +41,10 @@ export type Product = {
   clerkId?: string;
 };
 
+export type FavoriteWithProduct = Prisma.FavoriteGetPayload<{
+  include: { product: true };
+}>;
+
 export type Order = {
   id: string;
   clerkId?: string;
